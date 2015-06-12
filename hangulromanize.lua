@@ -75,7 +75,7 @@ end
 local hangulize = function (str)
   local hanguls = { }
   for _,roman in ipairs(str:lower():explode("-")) do
-    local cho, jung, jong;
+    local cho, jung, jong
     local roms = split("([aeiouwy]+)", roman)
 
     for i = 1, #roms do
@@ -100,8 +100,8 @@ local hangulize = function (str)
               done = true
               break
             end
-            if done then break end
           end
+          if done then break end
         end
       end
     end

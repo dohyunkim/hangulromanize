@@ -1,6 +1,6 @@
 # hangulromanize
 
-A LuaLaTeX package for romanization of Korean as per official system proclaimed by Korean Goverment.
+A LuaLaTeX package for romanization of Korean as per official system proclaimed by Korean Government.
 
 국어 로마자 표기법에 따라 한글을 로마자로 변환해주는 루아텍 패키지
 
