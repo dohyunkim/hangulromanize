@@ -34,7 +34,7 @@ local LC_A = { [0] =
 }
 
 local TC_A = { [0] =
-  "",  "g",  "kk", "gs", "n", "nj", "nh", "d", "l",  "lg", "lm", "lb",
+  "",   "g",  "kk", "gs", "n", "nj", "nh", "d", "l",  "lg", "lm", "lb",
   "ls", "lt", "lp", "lh", "m", "b",  "bs", "s", "ss", "ng", "j",  "ch",
   "k",  "t",  "p",  "h",
 }
@@ -46,7 +46,7 @@ local HYPH = {
 }
 
 local R2LC = { }; for i = 0, #LC_A do R2LC[ LC_A[i] ] = i end
-local R2MV = { }; for i = 0, #MV   do R2MV[ MV[i]   ] = i end
+local R2MV = { }; for i = 0, #MV   do R2MV[ MV  [i] ] = i end
 local R2TC = { }; for i = 0, #TC_A do R2TC[ TC_A[i] ] = i end
 
 require "unicode"
@@ -69,7 +69,7 @@ local split = function (sep, str)
 end
 
 local jamo2syll = function (cho, jung, jong)
-  return utfchar ((cho * 21 + jung) * 28 + jong + 0xAC00);
+  return utfchar ((cho * 21 + jung) * 28 + jong + 0xAC00)
 end
 
 local hangulize = function (str)
@@ -91,8 +91,8 @@ local hangulize = function (str)
         hanguls[ #hanguls + 1 ] = jamo2syll(cho, jung, jong)
       else -- TC..LC
         local done
-        for k,v in pairs(R2TC) do
-          for kk,vv in pairs(R2LC) do
+        for k in pairs(R2TC) do
+          for kk in pairs(R2LC) do
             if (rom == k..kk) then
               jong = R2TC[ k ]
               hanguls[ #hanguls + 1 ] = jamo2syll(cho, jung, jong)
@@ -140,10 +140,8 @@ local romanize = function (academy, capital, str)
   local roman = concat(romans)
 
   if not academy then
-    roman = roman:gsub("([GDBR])(%-?[aeiouwy])", function(aa,bb)
-      return aa:lower()..bb
-    end)
-    roman = roman:gsub("([GDBR])", function(aa) return TCNV[ aa ] end)
+    roman = roman:gsub("[GDBR]%-?[aeiouwy]", string.lower)
+    roman = roman:gsub("[GDBR]", TCNV)
     roman = roman:gsub("lr","ll")
   end
 
