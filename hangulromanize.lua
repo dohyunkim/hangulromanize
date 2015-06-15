@@ -52,19 +52,20 @@ local R2TC = { }; for i = 0, #TC_A do R2TC[ TC_A[i] ] = i end
 require "unicode"
 local utfchar = unicode.utf8.char
 local concat  = table.concat
+local insert  = table.insert
 local floor   = math.floor
 local tsprint = tex.sprint
 
 local split = function (sep, str)
   local t = { }
   str = str:gsub("(.-)"..sep, function(aa,bb)
-    t[ #t + 1 ] = aa
+    insert(t, aa)
     if bb then
-      t[ #t + 1 ] = bb
+      insert(t, bb)
     end
     return ""
   end)
-  t[ #t + 1 ] = str -- last item might be empty, which we accept.
+  insert(t, str) -- last item might be empty, which we accept.
   return t
 end
 
@@ -78,8 +79,8 @@ local hangulize = function (str)
     local cho, jung, jong
     local roms = split("([aeiouwy]+)", roman)
 
-    for i = 1, #roms do
-      rom = roms[ i ]:gsub("[^a-z]","")
+    for i, rom in ipairs(roms) do
+      rom = rom:gsub("[^a-z]","")
 
       if i % 2 == 0 then -- MV
         jung = R2MV[ rom ]
@@ -88,14 +89,14 @@ local hangulize = function (str)
         cho = R2LC[ rom ]
       elseif i == #roms then -- TC
         jong = R2TC[ rom ]
-        hanguls[ #hanguls + 1 ] = jamo2syll(cho, jung, jong)
+        insert(hanguls, jamo2syll(cho, jung, jong))
       else -- TC..LC
         local done
         for k in pairs(R2TC) do
           for kk in pairs(R2LC) do
-            if (rom == k..kk) then
+            if rom == k..kk then
               jong = R2TC[ k ]
-              hanguls[ #hanguls + 1 ] = jamo2syll(cho, jung, jong)
+              insert(hanguls, jamo2syll(cho, jung, jong))
               cho  = R2LC[ kk ]
               done = true
               break
@@ -119,21 +120,21 @@ local romanize = function (academy, capital, str)
       ch = ch - 0xAC00
       local cho  = L_C[ floor( ch / 588) ]
       local jung = MV [ floor((ch % 588) / 28) ]
-      local jong = T_C[ floor( ch % 28) ]
+      local jong = T_C[ floor( ch %  28) ]
 
       if academy and last and HYPH[ last..cho ] then
-        romans[ #romans + 1 ] = "-"
+        insert(romans, "-")
       end
       last = jong
 
       if academy and #romans == 0 and cho == "-" then
       else
-        romans[ #romans + 1 ] = cho
+        insert(romans, cho)
       end
-      romans[ #romans + 1 ] = jung
-      romans[ #romans + 1 ] = jong
+      insert(romans, jung)
+      insert(romans, jong)
     else
-      romans[ #romans + 1 ] = utfchar(ch)
+      insert(romans, utfchar(ch))
       last = nil
     end
   end
