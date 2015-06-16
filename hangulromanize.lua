@@ -49,7 +49,7 @@ local R2LC = { }; for i = 0, #LC_A do R2LC[ LC_A[i] ] = i end
 local R2MV = { }; for i = 0, #MV   do R2MV[ MV  [i] ] = i end
 local R2TC = { }; for i = 0, #TC_A do R2TC[ TC_A[i] ] = i end
 
-require "unicode"
+local unicode = require "unicode"
 local utfchar = unicode.utf8.char
 local concat  = table.concat
 local insert  = table.insert

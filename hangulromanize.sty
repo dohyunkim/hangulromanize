@@ -26,9 +26,15 @@
 }
 \def\Romanize@#1{%
   \def\@HangulWrite{#1}%
-  \@ifnextchar[%
-    \Romanize@@
-    {\def\@HangulRead{#1}\Romanize@@@}%
+  \let\@HangulRead\@HangulWrite
+  \futurelet\@let@token\Romanize@@@@
+}
+\def\Romanize@@@@{%
+  \ifx[\@let@token
+    \expandafter\Romanize@@
+  \else
+    \expandafter\Romanize@@@
+  \fi
 }
 \def\Romanize@@[#1]{%
   \def\@HangulRead{#1}%
