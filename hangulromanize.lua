@@ -75,34 +75,40 @@ end
 
 local hangulize = function (str)
   local hanguls = { }
-  for _,roman in ipairs(str:lower():explode("-")) do
-    local cho, jung, jong
-    local roms = split("([aeiouwy]+)", roman)
+  for j, word in ipairs(split("([^A-Za-z%-]+)",str)) do
+    if j % 2 == 0 then
+      insert(hanguls, word) -- non-hangul chars
+    else
+      for _,roman in ipairs(word:lower():explode("-")) do
+        local cho, jung, jong
+        local roms = split("([aeiouwy]+)", roman)
 
-    for i, rom in ipairs(roms) do
-      rom = rom:gsub("[^a-z]","")
+        for i, rom in ipairs(roms) do
+          rom = rom:gsub("[^a-z]","")
 
-      if i % 2 == 0 then -- MV
-        jung = R2MV[ rom ]
-      elseif i == 1 then -- LC
-        rom = rom == "" and "-" or rom
-        cho = R2LC[ rom ]
-      elseif i == #roms then -- TC
-        jong = R2TC[ rom ]
-        insert(hanguls, jamo2syll(cho, jung, jong))
-      else -- TC..LC
-        local done
-        for k in pairs(R2TC) do
-          for kk in pairs(R2LC) do
-            if rom == k..kk then
-              jong = R2TC[ k ]
-              insert(hanguls, jamo2syll(cho, jung, jong))
-              cho  = R2LC[ kk ]
-              done = true
-              break
+          if i % 2 == 0 then -- MV
+            jung = R2MV[ rom ]
+          elseif i == 1 then -- LC
+            rom = rom == "" and "-" or rom
+            cho = R2LC[ rom ]
+          elseif i == #roms then -- TC
+            jong = R2TC[ rom ]
+            insert(hanguls, jamo2syll(cho, jung, jong))
+          else -- TC..LC
+            local done
+            for k in pairs(R2TC) do
+              for kk in pairs(R2LC) do
+                if rom == k..kk then
+                  jong = R2TC[ k ]
+                  insert(hanguls, jamo2syll(cho, jung, jong))
+                  cho  = R2LC[ kk ]
+                  done = true
+                  break
+                end
+              end
+              if done then break end
             end
           end
-          if done then break end
         end
       end
     end
