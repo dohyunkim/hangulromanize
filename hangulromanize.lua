@@ -125,14 +125,16 @@ local romanize = function (academy, capital, str)
       if academy and last and HYPH[ last..cho ] then
         insert(romans, "-")
       end
-      last = jong
 
-      if academy and #romans == 0 and cho == "-" then
+      if academy and not last and cho == "-" then
+        -- the first char of a word
       else
         insert(romans, cho)
       end
       insert(romans, jung)
       insert(romans, jong)
+
+      last = jong
     else
       insert(romans, utfchar(ch))
       last = nil
