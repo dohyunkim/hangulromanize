@@ -1,4 +1,4 @@
-local err,warn,info,log = luatexbase.provides_module({
+luatexbase.provides_module({
   name        = 'hangulromanize',
   date        = '2015/06/11',
   version     = 0.1,

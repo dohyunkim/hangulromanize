@@ -4,7 +4,7 @@
 \ProvidesPackage{hangulromanize}[2015/06/11 v0.1 Hangul Romanization as per Revised system]
 
 \RequirePackage{luatexbase}
-\RequireLuaModule{hangulromanize}
+\directlua{require "hangulromanize"}
 
 % \Romanize*{벚꽃}[벋꼳]
 % 국어 로마자 표기법에 따른다.
