@@ -54,7 +54,7 @@ local concat  = table.concat
 local insert  = table.insert
 local tsprint = tex.sprint
 
-local split = function (sep, str)
+local function split (sep, str)
   local t = { }
   str = str:gsub("(.-)"..sep, function(aa,bb)
     insert(t, aa)
@@ -67,11 +67,11 @@ local split = function (sep, str)
   return t
 end
 
-local jamo2syll = function (cho, jung, jong)
+local function jamo2syll (cho, jung, jong)
   return utfchar ((cho * 21 + jung) * 28 + jong + 0xAC00)
 end
 
-local hangulize = function (str)
+local function hangulize (str)
   local hanguls = { }
   for j, word in ipairs(split("([^A-Za-z%-]+)",str)) do
     if j % 2 == 0 then
@@ -114,7 +114,7 @@ local hangulize = function (str)
   return concat(hanguls)
 end
 
-local romanize = function (academy, capital, str)
+local function romanize (academy, capital, str)
   local romans, last = { }, nil
   local L_C = academy and LC_A or LC
   local T_C = academy and TC_A or TC
