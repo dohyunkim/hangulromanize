@@ -1,7 +1,7 @@
 luatexbase.provides_module({
   name        = 'hangulromanize',
   date        = '2015/06/11',
-  version     = 0.1,
+  version     = '0.1',
   description = 'Hangul romanization as per Revised system',
   author      = 'Dohyun Kim',
   license     = 'public domain',

@@ -3,7 +3,6 @@
 
 \ProvidesPackage{hangulromanize}[2015/06/11 v0.1 Hangul Romanization as per Revised system]
 
-\RequirePackage{luatexbase}
 \directlua{require "hangulromanize"}
 
 % \Romanize*{벚꽃}[벋꼳]
@@ -65,6 +64,6 @@
 % 국어 로마자 표기법 제3장 제8항의 전자법을 역적용하여
 % 로마자를 한글로 변환한다.
 \protected\def\HangulizeA#1{%
-  \directlua{hangulromanize.hangulize("#1")} % space
+  \directlua{hangulromanize.hangulize "#1"} % space
   (#1)%
 }
