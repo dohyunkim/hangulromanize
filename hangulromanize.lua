@@ -49,11 +49,9 @@ local R2LC = { }; for i = 0, #LC_A do R2LC[ LC_A[i] ] = i end
 local R2MV = { }; for i = 0, #MV   do R2MV[ MV  [i] ] = i end
 local R2TC = { }; for i = 0, #TC_A do R2TC[ TC_A[i] ] = i end
 
-local unicode = require "unicode"
-local utfchar = unicode.utf8.char
+local utfchar = utf8.char
 local concat  = table.concat
 local insert  = table.insert
-local floor   = math.floor
 local tsprint = tex.sprint
 
 local split = function (sep, str)
@@ -124,9 +122,9 @@ local romanize = function (academy, capital, str)
   for ch in str:utfvalues() do
     if ch >= 0xAC00 and ch <= 0xD7A3 then
       ch = ch - 0xAC00
-      local cho  = L_C[ floor( ch / 588) ]
-      local jung = MV [ floor((ch % 588) / 28) ]
-      local jong = T_C[ floor( ch %  28) ]
+      local cho  = L_C[ ch // 588 ]
+      local jung = MV [ ch %  588 // 28 ]
+      local jong = T_C[ ch %   28 ]
 
       if academy and last and HYPH[ last..cho ] then
         insert(romans, "-")
