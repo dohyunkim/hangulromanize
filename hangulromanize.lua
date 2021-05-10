@@ -50,6 +50,7 @@ local R2MV = { }; for i = 0, #MV   do R2MV[ MV  [i] ] = i end
 local R2TC = { }; for i = 0, #TC_A do R2TC[ TC_A[i] ] = i end
 
 local utfchar = utf8.char
+local utfcodes = utf8.codes
 local concat  = table.concat
 local insert  = table.insert
 local tsprint = tex.sprint
@@ -77,7 +78,7 @@ local function hangulize (str)
     if j % 2 == 0 then
       insert(hanguls, word) -- non-hangul chars
     else
-      for _,roman in ipairs(word:lower():explode("-")) do
+      for _,roman in ipairs(split("%-", word:lower())) do -- no capture of %-
         local cho, jung, jong
         local roms = split("([aeiouwy]+)", roman)
 
@@ -119,7 +120,7 @@ local function romanize (academy, capital, str)
   local L_C = academy and LC_A or LC
   local T_C = academy and TC_A or TC
 
-  for ch in str:utfvalues() do
+  for _,ch in utfcodes(str) do
     if ch >= 0xAC00 and ch <= 0xD7A3 then
       ch = ch - 0xAC00
       local cho  = L_C[ ch // 588 ]
